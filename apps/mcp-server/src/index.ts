@@ -31,15 +31,23 @@ const httpServer = createServer(async (req, res) => {
 
   // SSE endpoint for MCP
   if (url.pathname === '/sse' && req.method === 'GET') {
-    // Extract API key from Authorization header
+    // Extract API key from Authorization header or query parameter
     const authHeader = req.headers.authorization;
-    if (!authHeader?.startsWith('Bearer ')) {
-      res.writeHead(401, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ error: 'Missing or invalid Authorization header' }));
-      return;
+    const queryApiKey = url.searchParams.get('apiKey');
+
+    let apiKey: string | null = null;
+
+    if (authHeader?.startsWith('Bearer ')) {
+      apiKey = authHeader.slice(7);
+    } else if (queryApiKey) {
+      apiKey = queryApiKey;
     }
 
-    const apiKey = authHeader.slice(7);
+    if (!apiKey) {
+      res.writeHead(401, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Missing API key. Use Authorization header or apiKey query parameter.' }));
+      return;
+    }
 
     try {
       // Validate API key and get client context
