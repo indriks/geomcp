@@ -39,6 +39,12 @@ coverage/
 
 # Supabase
 .supabase/
+supabase/.temp/
 
 # Local Ralph loop state
 .claude/ralph-loop.local.md
+.vercel
+.env*.local
+
+# Sensitive files
+api keys.md
