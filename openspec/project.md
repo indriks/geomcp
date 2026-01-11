@@ -12,12 +12,15 @@ GEO MCP is an MCP-native Generative Engine Optimization platform. The core thesi
 
 ### MCP Server (Hosted)
 - **Language:** TypeScript
-- **Hosting:** Vercel (server-side, NOT user-installed)
-- **Transport:** SSE (Server-Sent Events) for remote MCP connections
+- **Hosting:** Railway (server-side, NOT user-installed)
+- **Transport:** Streamable HTTP (MCP 2025-06-18 spec) with legacy SSE fallback
+- **Authentication:** OAuth 2.1 (RFC 8414, RFC 9728, RFC 7591 DCR) with API key as credential
 - **Protocol:** Model Context Protocol (MCP)
 - **LLM Integration:** OpenRouter (default: Claude Sonnet)
 
-**Important:** The MCP server is hosted by GEO MCP. Users do NOT install anything locally. They simply add our hosted MCP endpoint to their Claude Desktop configuration with their API key.
+**Important:** The MCP server is hosted by GEO MCP. Users do NOT install anything locally. They connect via:
+1. **Claude Code CLI:** `claude mcp add --transport http geo-mcp https://mcp-server-production-fb14.up.railway.app/mcp`
+2. **Claude.ai/Desktop:** Add as custom connector (OAuth flow authenticates with API key)
 
 ### Backend
 - **Hosting:** Vercel
@@ -49,14 +52,20 @@ GEO MCP is an MCP-native Generative Engine Optimization platform. The core thesi
 - Prefer explicit types over inference for public APIs
 
 ### Architecture Patterns
-- **Hosted MCP server:** Server runs on our infrastructure, users connect via SSE
+- **Hosted MCP server:** Server runs on Railway, users connect via Streamable HTTP with OAuth 2.1
 - **MCP-first design:** All user-facing functionality exposed as MCP tools
 - **Modular server structure:**
   ```
   apps/mcp-server/
   ├── src/
-  │   ├── server.ts      # SSE MCP server entry point
-  │   ├── auth/          # API key validation middleware
+  │   ├── index.ts       # HTTP server with MCP endpoints
+  │   ├── server.ts      # MCP server factory
+  │   ├── auth/
+  │   │   ├── middleware.ts  # API key validation
+  │   │   └── oauth.ts       # OAuth 2.1 implementation
+  │   ├── transport/
+  │   │   ├── streamable-http.ts  # Streamable HTTP transport
+  │   │   └── sse.ts              # Legacy SSE transport
   │   ├── tools/
   │   │   ├── core/      # Status, setup, profile
   │   │   ├── content/   # Glossary, interview, comparison
