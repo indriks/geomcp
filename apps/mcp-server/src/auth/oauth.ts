@@ -261,7 +261,7 @@ export function renderAuthorizationPage(params: URLSearchParams): string {
       </ul>
     </div>
 
-    <form id="authForm" method="POST" action="/oauth/authorize">
+    <form id="authForm" method="POST" action="${baseUrl}/oauth/authorize">
       <input type="hidden" name="client_id" value="${clientId}">
       <input type="hidden" name="redirect_uri" value="${redirectUri}">
       <input type="hidden" name="state" value="${state}">
@@ -283,11 +283,11 @@ export function renderAuthorizationPage(params: URLSearchParams): string {
   </div>
 
   <script>
-    document.getElementById('authForm').addEventListener('submit', function(e) {
+    const form = document.getElementById('authForm');
+    form.addEventListener('submit', function() {
       const button = this.querySelector('button');
       button.textContent = 'Connecting...';
       button.disabled = true;
-      // Let the form submit normally - browser will follow the redirect
     });
   </script>
 </body>

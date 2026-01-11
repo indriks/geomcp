@@ -1,0 +1,6 @@
+{
+  "enabledMcpjsonServers": [
+    "geo-mcp"
+  ],
+  "enableAllProjectMcpServers": true
+}

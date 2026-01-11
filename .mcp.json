@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "geo-mcp": {
+      "type": "http",
+      "url": "https://mcp-server-production-fb14.up.railway.app/mcp"
+    }
+  }
+}
