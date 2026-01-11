@@ -1,5 +1,6 @@
 export interface EnvConfig {
   port: number;
+  baseUrl: string;
   supabaseUrl: string;
   supabaseAnonKey: string;
   supabaseServiceRoleKey: string;
@@ -16,6 +17,9 @@ export interface EnvConfig {
 export function getEnvConfig(): EnvConfig {
   return {
     port: parseInt(process.env.PORT || '3001', 10),
+    baseUrl: process.env.MCP_BASE_URL || process.env.RAILWAY_PUBLIC_DOMAIN
+      ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`
+      : `http://localhost:${process.env.PORT || '3001'}`,
     supabaseUrl: process.env.SUPABASE_URL || '',
     supabaseAnonKey: process.env.SUPABASE_ANON_KEY || '',
     supabaseServiceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY || '',
