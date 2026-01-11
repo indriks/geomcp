@@ -284,10 +284,16 @@ export function renderAuthorizationPage(params: URLSearchParams): string {
 
   <script>
     const form = document.getElementById('authForm');
-    form.addEventListener('submit', function() {
+    console.log('[GEO MCP] Form found:', !!form);
+    console.log('[GEO MCP] Form action:', form.action);
+
+    form.addEventListener('submit', function(e) {
+      console.log('[GEO MCP] Form submitting...');
       const button = this.querySelector('button');
       button.textContent = 'Connecting...';
       button.disabled = true;
+      console.log('[GEO MCP] Form will POST to:', this.action);
+      // Form will submit naturally after this handler
     });
   </script>
 </body>
