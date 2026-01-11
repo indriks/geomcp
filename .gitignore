@@ -48,3 +48,4 @@ supabase/.temp/
 
 # Sensitive files
 api keys.md
+.github/workflows/
