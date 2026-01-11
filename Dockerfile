@@ -1,5 +1,6 @@
 FROM node:20-alpine
 
+# Build version: 0.1.1
 WORKDIR /app
 
 # Install pnpm

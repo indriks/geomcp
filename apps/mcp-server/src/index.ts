@@ -80,7 +80,7 @@ const httpServer = createServer(async (req, res) => {
     // Health check endpoint
     // ============================================
     if (url.pathname === '/health') {
-      jsonResponse(res, 200, { status: 'ok', version: '0.1.0', transport: 'streamable-http' });
+      jsonResponse(res, 200, { status: 'ok', version: '0.1.1', transport: 'streamable-http', build: Date.now() });
       return;
     }
 
