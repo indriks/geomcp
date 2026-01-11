@@ -26,7 +26,7 @@ setInterval(() => {
 }, 60 * 1000);
 
 export class StreamableHTTPTransport implements Transport {
-  private sessionId: string;
+  public sessionId: string;
   private sseResponse: ServerResponse | null = null;
   private eventId = 0;
   private closed = false;

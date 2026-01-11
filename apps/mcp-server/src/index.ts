@@ -25,7 +25,6 @@ import { AuthContext } from '@geomcp/shared';
 
 const config = getEnvConfig();
 const PORT = config.port;
-const MCP_PROTOCOL_VERSION = '2025-03-26';
 
 // Helper to read request body
 async function readBody(req: IncomingMessage): Promise<string> {
