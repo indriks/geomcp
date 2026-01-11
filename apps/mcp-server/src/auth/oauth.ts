@@ -283,42 +283,11 @@ export function renderAuthorizationPage(params: URLSearchParams): string {
   </div>
 
   <script>
-    document.getElementById('authForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const form = e.target;
-      const errorEl = document.getElementById('error');
-      const button = form.querySelector('button');
-
+    document.getElementById('authForm').addEventListener('submit', function(e) {
+      const button = this.querySelector('button');
       button.textContent = 'Connecting...';
       button.disabled = true;
-      errorEl.style.display = 'none';
-
-      try {
-        const formData = new URLSearchParams(new FormData(form));
-        const response = await fetch('/oauth/authorize', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: formData,
-          redirect: 'manual'
-        });
-
-        if (response.type === 'opaqueredirect' || response.status === 302) {
-          window.location.href = response.headers.get('Location') || form.action;
-        } else if (response.ok) {
-          const location = response.headers.get('Location');
-          if (location) {
-            window.location.href = location;
-          }
-        } else {
-          const data = await response.json();
-          throw new Error(data.error_description || 'Authentication failed');
-        }
-      } catch (err) {
-        errorEl.textContent = err.message;
-        errorEl.style.display = 'block';
-        button.textContent = 'Connect to GEO MCP';
-        button.disabled = false;
-      }
+      // Let the form submit normally - browser will follow the redirect
     });
   </script>
 </body>
