@@ -122,9 +122,17 @@ const httpServer = createServer(async (req, res) => {
     // Authorization endpoint - POST handles login
     if (url.pathname === '/oauth/authorize' && req.method === 'POST') {
       const body = await parseFormBody(req);
+      console.log('[OAuth] Authorization POST received:', {
+        client_id: body.get('client_id'),
+        redirect_uri: body.get('redirect_uri'),
+        has_api_key: !!body.get('api_key'),
+      });
+
       const result = await handleAuthorization(body);
+      console.log('[OAuth] Authorization result:', { status: result.status, hasLocation: !!result.headers?.Location });
 
       if (result.headers?.Location) {
+        console.log('[OAuth] Redirecting to:', result.headers.Location);
         res.writeHead(result.status, result.headers);
         res.end();
       } else {
